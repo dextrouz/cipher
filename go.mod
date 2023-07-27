@@ -2,9 +2,7 @@ module github.com/ffiat/cipher
 
 go 1.19
 
-replace github.com/ffiat/nostr => ../nostr
-
-require github.com/ffiat/nostr v0.0.0-00010101000000-000000000000
+require github.com/ffiat/nostr v0.1.0
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2 // indirect

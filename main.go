@@ -11,13 +11,13 @@ import (
 
 func main() {
 
-    // Keygen and decode flags
+	// Keygen and decode flags
 
-    keygen := flag.Bool("keygen", false, "display colorized output")
-    decode := flag.String("decode", "", "decode nsec/npub")
-    flag.Parse()
+	keygen := flag.Bool("keygen", false, "display colorized output")
+	decode := flag.String("decode", "", "decode nsec/npub")
+	flag.Parse()
 
-    if *keygen {
+	if *keygen {
 		fmt.Println("Generating key")
 		sk := nostr.GeneratePrivateKey()
 		pk, err := nostr.GetPublicKey(sk)
@@ -34,19 +34,19 @@ func main() {
 		}
 		fmt.Printf("nsec: %s\n", ns)
 		fmt.Printf("npub: %s", np)
-    }
+	}
 
-    if *decode != "" {
+	if *decode != "" {
 		pubkey, err := nostr.DecodeBech32(*decode)
 		if err != nil {
 			log.Fatal("unable to generate public key")
 		}
 		fmt.Printf("%s", pubkey)
-    }
+	}
 
-    // Encoding flags
+	// Encoding flags
 
-    var nsec, npub string
+	var nsec, npub string
 	fs := flag.NewFlagSet("encode", flag.ExitOnError)
 	fs.StringVar(&nsec, "nsec", "", "subcommand 1 flag 'a'")
 	fs.StringVar(&npub, "npub", "", "subcommand 1 flag 'b'")
@@ -54,24 +54,24 @@ func main() {
 	switch os.Args[1] {
 	case "encode":
 		err := fs.Parse(os.Args[2:])
-        if err != nil {
-            log.Fatalln("unsupported key type")
-        }
+		if err != nil {
+			log.Fatalln("unsupported key type")
+		}
 
-        if nsec != "" {
-            key, err := nostr.EncodePrivateKey(nsec)
-            if err != nil {
-                log.Fatal("unable to encode secret key")
-            }
-            fmt.Println(key)
-        } else if npub != "" {
-            key, err := nostr.EncodePublicKey(npub)
-            if err != nil {
-                log.Fatal("unable to encode public key")
-            }
-            fmt.Println(key)
-        } else {
-            log.Fatalln("unsupported key type")
-        }
+		if nsec != "" {
+			key, err := nostr.EncodePrivateKey(nsec)
+			if err != nil {
+				log.Fatal("unable to encode secret key")
+			}
+			fmt.Println(key)
+		} else if npub != "" {
+			key, err := nostr.EncodePublicKey(npub)
+			if err != nil {
+				log.Fatal("unable to encode public key")
+			}
+			fmt.Println(key)
+		} else {
+			log.Fatalln("unsupported key type")
+		}
 	}
 }
