@@ -37,7 +37,7 @@ func main() {
 	}
 
 	if *decode != "" {
-		pubkey, err := nostr.DecodeBech32(*decode)
+		_, pubkey, err := nostr.DecodeBech32(*decode)
 		if err != nil {
 			log.Fatal("unable to generate public key")
 		}
@@ -46,13 +46,15 @@ func main() {
 
 	// Encoding flags
 
-	var nsec, npub string
+	var nsec, npub, note string
 	fs := flag.NewFlagSet("encode", flag.ExitOnError)
 	fs.StringVar(&nsec, "nsec", "", "subcommand 1 flag 'a'")
 	fs.StringVar(&npub, "npub", "", "subcommand 1 flag 'b'")
+	fs.StringVar(&note, "note", "", "subcommand 1 flag 'b'")
 
 	switch os.Args[1] {
 	case "encode":
+
 		err := fs.Parse(os.Args[2:])
 		if err != nil {
 			log.Fatalln("unsupported key type")
@@ -68,6 +70,12 @@ func main() {
 			key, err := nostr.EncodePublicKey(npub)
 			if err != nil {
 				log.Fatal("unable to encode public key")
+			}
+			fmt.Println(key)
+		} else if note != "" {
+			key, err := nostr.EncodeNote(note)
+			if err != nil {
+				log.Fatal("unable to encode note")
 			}
 			fmt.Println(key)
 		} else {
